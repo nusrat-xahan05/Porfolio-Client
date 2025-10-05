@@ -20,7 +20,7 @@ const Hero = () => {
         <section className="xl:pt-[70px] relative">
             <div className="container mx-auto px-4">
                 <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-x-8">
-                    {/* Left / Content */}
+                    {/* Banner Content */}
                     <div className="flex flex-col justify-center text-center lg:text-left mx-auto lg:mx-0 pt-6">
                         <div className="w-fit flex gap-1.5 items-center px-4 py-2 rounded-lg bg-[#FFCFCC] bg-opacity-40 mb-1.5 mx-auto lg:mx-0">
                             <Crown className="size-5 fill-[#07102A] text-[#07102A]" />
@@ -60,13 +60,13 @@ const Hero = () => {
                         </div>
                     </div>
 
-                    {/* Right / Image - only lg+ */}
+                    {/* Banner Image */}
                     <div className="hidden lg:flex relative justify-center">
                         <Image src={profileImage} alt="Profile-Image" className="rounded-lg" />
                     </div>
                 </div>
 
-                {/* Bounce Arrow */}
+                {/* Animation icon */}
                 <motion.div
                     className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 bottom-10 xl:bottom-8 py-3 px-1 rounded-3xl border-2 border-[#FD705C] cursor-pointer"
                     animate={{ y: [0, -15, 0] }}
