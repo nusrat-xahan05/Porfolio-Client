@@ -30,13 +30,14 @@ export default function LoginForm() {
             });
 
             if (response?.error) {
-                toast.success(response?.error, {id: toastId});
+                toast.error(response?.error, {id: toastId});
             } else {
                 toast.success("Logged In Successfull", {id: toastId});
                 router.push("/dashboard");
             }
         } catch (err) {
-            console.error(err);
+            toast.error("Something Went Wrong During Login", {id: toastId});
+            console.error("Login Error: ", err);
         }
     };
 
