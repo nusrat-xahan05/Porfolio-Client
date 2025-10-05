@@ -18,7 +18,7 @@ export default function Navbar() {
     { href: "/about", label: "About" },
     { href: "/projects", label: "My Projects" },
     { href: "/blogs", label: "Blogs" },
-    // ...(session?.user?.role === "ADMIN" ? [{ href: "/dashboard", label: "Dashboard" }] : []),
+    ...(session?.user?.role === "ADMIN" ? [{ href: "/dashboard", label: "Dashboard" }] : []),
   ]
 
   return (
