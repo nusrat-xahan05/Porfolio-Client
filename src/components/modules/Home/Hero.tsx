@@ -1,3 +1,5 @@
+"use client"
+
 import { ChevronsDown, Crown, Download } from 'lucide-react';
 import Image from 'next/image';
 import profileImage from '@/assets/images/nusrat.png';
@@ -6,8 +8,14 @@ import Link from 'next/link';
 import { FaDiscord } from 'react-icons/fa6';
 import { FaGithub } from 'react-icons/fa6';
 import { RiLinkedinFill } from 'react-icons/ri';
+import { motion } from 'framer-motion';
 
 const Hero = () => {
+    const scrollToNextSection = () => {
+        const section = document.getElementById('next-section');
+        section?.scrollIntoView({ behavior: 'smooth' });
+    };
+
     return (
         <section className="xl:pt-[70px] relative">
             <div className="container mx-auto px-4">
@@ -59,9 +67,14 @@ const Hero = () => {
                 </div>
 
                 {/* Bounce Arrow */}
-                <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 bottom-10 xl:bottom-8 animate-bounce py-3 px-1 rounded-3xl border-2 border-[#FD705C]">
+                <motion.div
+                    className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 bottom-10 xl:bottom-8 py-3 px-1 rounded-3xl border-2 border-[#FD705C] cursor-pointer"
+                    animate={{ y: [0, -15, 0] }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                    onClick={scrollToNextSection}
+                >
                     <ChevronsDown className="text-3xl text-[#FD705C]" />
-                </div>
+                </motion.div>
             </div>
         </section>
     );
