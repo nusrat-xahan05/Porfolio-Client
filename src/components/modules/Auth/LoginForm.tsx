@@ -21,7 +21,7 @@ export default function LoginForm() {
     });
 
     const onSubmit = async (values: FieldValues) => {
-        // const toastId = toast.loading("Processing....");
+        const toastId = toast.loading("Processing....");
 
         try {
             const response = await signIn("credentials", {
@@ -29,13 +29,10 @@ export default function LoginForm() {
                 redirect: false
             });
 
-            console.log('form login response: ', response);
-
             if (response?.error) {
-                // Show only when login failed
-                console.log('fromlofin err: ', response.error);
+                toast.success(response?.error, {id: toastId});
             } else {
-                // toast.success(response?.message, {id: toastId});
+                toast.success("Logged In Successfull", {id: toastId});
                 router.push("/dashboard");
             }
         } catch (err) {
