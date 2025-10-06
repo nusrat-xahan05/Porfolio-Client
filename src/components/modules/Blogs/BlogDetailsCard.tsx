@@ -1,5 +1,4 @@
 import Image from "next/image";
-import faq from '@/assets/images/faq.jpg'
 import { BlogProps } from "@/types";
 import parse from "html-react-parser";
 
@@ -41,7 +40,7 @@ export default async function BlogDetailsCard({ blog }: { blog: BlogProps }) {
       {blog.thumbnail ? (
         <div className="relative h-80 w-full overflow-hidden">
           <Image
-            src={blog?.thumbnail || faq}
+            src={blog?.thumbnail}
             alt={blog?.title}
             fill
             className="rounded-lg"

@@ -5,14 +5,14 @@ const AboutMe = () => {
     return (
         <section className="py-28" id="next-section">
             <div className="container mx-auto px-4">
-                <div className="flex flex-col lg:flex-row gap-12 items-center">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center justify-between">
                     {/* Left Side */}
-                    <div className="space-y-6">
+                    <div className="space-y-6 py-4">
                         <div>
-                            <h2 className="text-4xl sm:text-5xl xl:text-[56px] xl:leading-[88px] tracking-[-2px] font-bold mb-4 text-white">About
+                            <h3 className="text-4xl sm:text-5xl xl:text-[56px] xl:leading-[88px] tracking-[-2px] font-bold mb-4 text-white">About
                                 <span className="bg-gradient-to-r from-[#FFCFCC] via-[#FD705C] to-[#FF2056] bg-clip-text text-transparent"> Me</span>
-                            </h2>
-                            <p className="text-gray-400 max-w-lg">
+                            </h3>
+                            <p className="text-gray-400">
                                 I am a Full Stack Developer with a CSE background, passionate about building scalable and modern web applications. I have hands-on experience in freelancing projects, delivering solutions that combine performance, security, and user-friendly design.
                             </p>
                         </div>

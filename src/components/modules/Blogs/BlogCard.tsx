@@ -1,5 +1,4 @@
 import Link from "next/link";
-import faq from '@/assets/images/faq.jpg'
 import Image from "next/image";
 import { ArrowRight, Calendar, Eye, SquarePen, Trash2 } from "lucide-react";
 import { BlogProps } from "@/types";
@@ -18,9 +17,10 @@ export default async function BlogCard({ blog }: { blog: BlogProps }) {
         {blog.thumbnail ? (
           <div className="relative h-56 w-full overflow-hidden">
             <Image
-              src={blog?.thumbnail || faq}
+              src={blog?.thumbnail}
               alt={blog?.title}
               fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               className="object-cover group-hover:scale-105 transition-transform duration-300"
             />
           </div>
