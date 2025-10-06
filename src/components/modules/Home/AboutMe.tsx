@@ -25,7 +25,7 @@ const AboutMe = () => {
 
                     <div className="flex flex-col gap-6">
                         <div className="flex items-center text-left gap-7">
-                            <div className="bg-[rgba(41,54,92,0.9)] p-3.5 rounded-full">
+                            <div className="bg-[#0E1A3A] p-3.5 rounded-full">
                                 <FaLaptopCode className="text-[#FD705C] text-3xl" />
                             </div>
                             <div>
@@ -37,7 +37,7 @@ const AboutMe = () => {
                         </div>
 
                         <div className="flex items-center text-left gap-7">
-                            <div className="bg-[rgba(41,54,92,0.9)] p-3.5 rounded-full">
+                            <div className="bg-[#0E1A3A] p-3.5 rounded-full">
                                 <FaLightbulb className="text-[#FD705C] text-3xl" />
                             </div>
                             <div>
@@ -49,7 +49,7 @@ const AboutMe = () => {
                         </div>
 
                         <div className="flex items-center text-left gap-7">
-                            <div className="bg-[rgba(41,54,92,0.9)] p-3.5 rounded-full">
+                            <div className="bg-[#0E1A3A] p-3.5 rounded-full">
                                 <FaUsers className="text-[#FD705C] text-3xl" />
                             </div>
                             <div>

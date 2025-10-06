@@ -1,4 +1,4 @@
-import BlogCard from "@/components/modules/Blogs/BlogCard";
+import BlogCardPublic from "@/components/modules/Blogs/BlogCardPublic";
 import { BlogProps } from "@/types";
 import { Metadata } from "next";
 
@@ -24,14 +24,11 @@ const AllBlogsPage = async () => {
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10 mb-7">
           {blogs?.map((blog: BlogProps) => (
-            <BlogCard key={blog?._id} blog={blog} />
+            <BlogCardPublic key={blog?._id} blog={blog} />
           ))}
         </div>
       </div>
     </div>
-    // <div className="max-w-7xl mx-auto px-4 pt-10 pb-20 flex flex-col items-center">
-
-    // </div>
   );
 };
 

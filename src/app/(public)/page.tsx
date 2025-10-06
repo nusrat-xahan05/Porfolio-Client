@@ -1,4 +1,4 @@
-import BlogCard from "@/components/modules/Blogs/BlogCard";
+import BlogCardPublic from "@/components/modules/Blogs/BlogCardPublic";
 import AboutMe from "@/components/modules/Home/AboutMe";
 import Hero from "@/components/modules/Home/Hero";
 import { BlogProps } from "@/types";
@@ -25,7 +25,7 @@ export default async function HomePage() {
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10 mb-7">
                     {blogs.slice(0, 3).map((blog: BlogProps) => (
-                        <BlogCard key={blog?._id} blog={blog} />
+                        <BlogCardPublic key={blog?._id} blog={blog} />
                     ))}
                 </div>
                 <Link href="/blogs" className="mt-2.5 p-[1.5px] rounded-[5px] bg-gradient-to-r from-[#f5ebeb] to-[#FD705C] inline-block">
