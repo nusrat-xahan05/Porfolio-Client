@@ -19,12 +19,12 @@ export default async function HomePage() {
             <AboutMe></AboutMe>
 
             {/* BLOGS */}
-            <div className="max-w-7xl mx-auto px-4 pt-10 pb-20 flex flex-col items-center">
+            <div className="max-w-7xl mx-auto px-4 pb-24 flex flex-col items-center">
                 <h3 className="text-4xl sm:text-5xl xl:text-[56px] xl:leading-[88px] tracking-[-2px] font-bold mb-4 text-white">Featured
                     <span className="bg-gradient-to-r from-[#FFCFCC] via-[#FD705C] to-[#FF2056] bg-clip-text text-transparent"> Blogs</span>
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10 mb-7">
-                    {blogs.slice(0, 3).map((blog: BlogProps) => (
+                    {blogs?.slice(0, 3).map((blog: BlogProps) => (
                         <BlogCardPublic key={blog?._id} blog={blog} />
                     ))}
                 </div>
