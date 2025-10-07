@@ -2,16 +2,6 @@ import DeleteBlogCard from "@/components/modules/Blogs/DeleteBlogCard";
 import { getBlogById } from "@/services/Blogs";
 
 
-export const generateMetadata = async ({ params }: { params: Promise<{ blogId: string }> }) => {
-    const { blogId } = await params;
-    const blog = await getBlogById(blogId);
-
-    return {
-        title: blog?.title,
-        description: blog?.content,
-    };
-};
-
 const DeleteBlogPage = async ({ params }: { params: Promise<{ blogId: string }> }) => {
     const { blogId } = await params;
     const blog = await getBlogById(blogId);

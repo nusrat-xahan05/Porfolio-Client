@@ -31,7 +31,7 @@ export default async function BlogCardPublic({ blog }: { blog: BlogProps }) {
                 {/* Content */}
                 <div className="p-6">
                     <h3 className="text-lg font-bold mb-2 text-[#FFCFCC]">{blog?.title}</h3>
-                    <h5 className="text-sm text-[#B0B6C2] mb-6 line-clamp-3">{parse(blog?.content)}</h5>
+                    <h5 className="text-sm text-[#B0B6C2] mb-6 line-clamp-1">{parse(blog?.content)}</h5>
 
                     <div className="flex justify-between text-[rgba(168,177,197,0.8)] text-xs mb-4">
                         <span className="flex items-center gap-1">
