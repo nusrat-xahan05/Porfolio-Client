@@ -20,7 +20,7 @@ const AllBlogsPageFromDashboard = async () => {
     const { data: blogs } = await res.json();
 
     return (
-        <div className="w-full bg-[rgba(255,207,204,0.5)] py-14">
+        <div className="w-full bg-[rgba(255,207,204,0.5)] min-h-screen py-14">
             <div className="px-4">
                 <div className="text-center mb-7">
                     <h3 className="text-center text-4xl sm:text-5xl xl:text-[56px] xl:leading-[88px] tracking-[-2px] font-bold text-[#07102A]">Featured

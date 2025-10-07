@@ -10,7 +10,7 @@ export const updateBlogBySlug = async (id: string, data: FormData) => {
             return { success: false, message: "User not authenticated" };
         }
 
-        const res = await fetch(`${process.env.API_BASE_URL}/blogs/${id}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/blogs/${id}`, {
             method: "PATCH",
             headers: {
                 Authorization: `Bearer ${session.user.accessToken}`,
