@@ -3,11 +3,11 @@
 import { getUserSession } from "@/helpers/getUserSession";
 import { revalidatePath, revalidateTag } from "next/cache";
 
-export const createBlog = async (data: FormData) => {
+export const createProject = async (data: FormData) => {
     try {
         const session = await getUserSession();
 
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/blogs/create-blog`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/projects/create-project`, {
             method: "POST",
             headers: {
                 Authorization: `Bearer ${session?.user.accessToken}`,
@@ -18,15 +18,15 @@ export const createBlog = async (data: FormData) => {
         const result = await res.json();
 
         if (result?.success) {
-            revalidateTag("BLOGS");
-            revalidatePath("/blogs");
+            revalidateTag("PROJECTS");
+            revalidatePath("/projects");
         }
         return {
             success: result?.success ?? false,
             message: result?.message ?? "Something went wrong",
         };
     } catch (error) {
-        console.error("Create blog error:", error);
-        return { success: false, message: "Unexpected error while creating blog." };
+        console.error("Create project error:", error);
+        return { success: false, message: "Unexpected error while creating project." };
     }
 };
