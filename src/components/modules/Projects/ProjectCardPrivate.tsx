@@ -66,8 +66,8 @@ export default async function ProjectCardPrivate({ project }: { project: Project
                         </Link>
 
                         <div className="py-4 flex items-center gap-2 text-[#FD705C]">
-                            <Link className="hover:text-white" href={`/dashboard/update-blog/${project.slug}`}><SquarePen size={20} /></Link>
-                            <Link className="hover:text-white" href={`/dashboard/delete-blog/${project.slug}`}><Trash2 size={20} /></Link>
+                            <Link className="hover:text-white" href={`/dashboard/update-project/${project.slug}`}><SquarePen size={20} /></Link>
+                            <Link className="hover:text-white" href={`/dashboard/delete-project/${project.slug}`}><Trash2 size={20} /></Link>
                         </div>
                     </div>
                 </div>

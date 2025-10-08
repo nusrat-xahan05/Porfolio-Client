@@ -1,5 +1,4 @@
 import UpdateProjectForm from "@/components/modules/Projects/UpdateProjectForm";
-import { getBlogById } from "@/services/Blogs";
 import { getProjectById } from "@/services/Projects";
 
 
@@ -15,7 +14,7 @@ export const generateMetadata = async ({ params }: { params: Promise<{ projectId
 
 const UpdateProjectPage = async ({ params }: { params: Promise<{ projectId: string }> }) => {
     const { projectId } = await params;
-    const project = await getBlogById(projectId);
+    const project = await getProjectById(projectId);
 
     return (
         <div className="w-full bg-[rgba(255,207,204,0.5)] min-h-screen py-14">

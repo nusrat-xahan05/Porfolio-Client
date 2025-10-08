@@ -14,10 +14,10 @@ import SingleImageUploader from "./SingleImageUploader";
 
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 import "react-quill-new/dist/quill.snow.css";
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { updateProjectBySlug } from "@/actions/project/updateProjectBySlug";
+import Image from "next/image";
 
 
 // Simple URL regex (matches most http/https URLs)
@@ -28,14 +28,13 @@ const projectZodSchema = z.object({
             issue.input === undefined
                 ? "Title is required"
                 : "Title must be a string",
-    }).min(2, { message: "Title too short" }),
+    }).min(5, { message: "Title must be at least 5 characters" }),
 
-    description: z.string({
-        error: (issue) =>
-            issue.input === undefined
-                ? "Description is required"
-                : "Description must be a string",
-    }).min(2, { message: "Description too short" }),
+    description: z
+        .string()
+        .refine((val) => val.replace(/<(.|\n)*?>/g, "").trim().length > 10, {
+            message: "Description must be at least 10 characters",
+        }),
 
     thumbnail: z
         .string()
@@ -55,11 +54,9 @@ const projectZodSchema = z.object({
                 : "Live site link must be a string",
     }).regex(urlRegex, { message: "Live site must be a valid URL" }),
 
-    technologies: z.array(
-        z.string({
-            error: () => "Technology must be a string",
-        }).min(2, { message: "At least 2 Technologies are required" })
-    ),
+    technologies: z
+        .array(z.string().min(1, "Technologies cannot be empty"))
+        .min(2, { message: "At least 2 techs are required" }),
 });
 
 interface UpdateProjectFormProps {
@@ -77,17 +74,17 @@ interface UpdateProjectFormProps {
 export default function UpdateProjectForm({ project }: UpdateProjectFormProps) {
     const router = useRouter();
     const [image, setImage] = useState<File | null>(null);
-    const [techInput, setTechInput] = useState("");
+    const [techInput, setTechInput] = useState(project.technologies?.join(",") || "");
 
     const form = useForm<z.infer<typeof projectZodSchema>>({
         resolver: zodResolver(projectZodSchema),
         defaultValues: {
-            title: "",
-            description: "",
-            thumbnail: "",
-            githubLink: "",
-            liveSite: "",
-            technologies: [],
+            title: project.title || "",
+            description: project.description || "",
+            thumbnail: project.thumbnail || "",
+            githubLink: project.githubLink || "",
+            liveSite: project.liveSite || "",
+            technologies: project.technologies || [],
         },
     });
 
@@ -98,8 +95,11 @@ export default function UpdateProjectForm({ project }: UpdateProjectFormProps) {
         formData.append("description", values.description);
         formData.append("githubLink", values.githubLink);
         formData.append("liveSite", values.liveSite);
-        formData.append("file", image as File);
+        if (image) {
+            formData.append("file", image as File);
+        }
         values?.technologies?.forEach((tag) => formData.append("technologies", tag));
+
 
         const toastId = toast.loading("Processing....");
         try {
@@ -135,27 +135,69 @@ export default function UpdateProjectForm({ project }: UpdateProjectFormProps) {
                             <FormItem>
                                 <FormLabel>Title</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Type Blog Title" {...field} />
+                                    <Input placeholder="Type Project Title" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
                         )}
                     />
 
-                    {/* Content */}
+                    {/* Description */}
                     <div className="mb-14">
                         <FormField
                             control={form.control}
                             name="description"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Content</FormLabel>
+                                    <FormLabel>Description</FormLabel>
                                     <FormControl>
                                         <ReactQuill
                                             theme="snow"
                                             value={field.value || ""}
                                             onChange={(value) => field.onChange(value)}
-                                            placeholder="Write your blog content..."
+                                            placeholder="Write your project description..."
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+
+                    <div className="mt-6 flex flex-col gap-6">
+                        <FormField
+                            control={form.control}
+                            name="githubLink"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="text-[#07102A] font-medium">
+                                        Github Site URL
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="url"
+                                            placeholder="e.g. https://github.com/nusrat-xahan05/my-project"
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="liveSite"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="text-[#07102A] font-medium">
+                                        Live Site URL
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="url"
+                                            placeholder="e.g. https://myproject.vercel.app"
+                                            {...field}
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -181,13 +223,12 @@ export default function UpdateProjectForm({ project }: UpdateProjectFormProps) {
                         <SingleImageUploader onChange={setImage} />
                     </div>
 
-                    {/* Tags */}
                     <FormField
                         control={form.control}
                         name="technologies"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Tags (comma separated)</FormLabel>
+                                <FormLabel>Technologies (comma separated)</FormLabel>
                                 <FormControl>
                                     <Input
                                         type="text"
@@ -211,7 +252,7 @@ export default function UpdateProjectForm({ project }: UpdateProjectFormProps) {
 
                     {/* Submit */}
                     <div className="flex items-center justify-center gap-3">
-                        <Link href="/dashboard/all-blogs">
+                        <Link href="/dashboard/all-projects">
                             <Button variant="outline" className="flex items-center gap-1 cursor-pointer">
                                 <ArrowLeft className="w-4 h-4" /> Cancel
                             </Button>
