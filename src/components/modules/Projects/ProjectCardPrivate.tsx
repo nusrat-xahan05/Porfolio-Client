@@ -33,14 +33,18 @@ export default async function ProjectCardPrivate({ project }: { project: Project
                     <h5 className="text-sm text-[#B0B6C2] mb-6 line-clamp-1">{parse(project?.description)}</h5>
 
                     <div className="flex flex-wrap gap-2 mb-4">
-                        {project?.technologies.map((tag, idx) => (
+                        {project?.technologies.slice(0, 3).map((tag, idx) => (
                             <span
                                 key={idx}
-                                className="text-xs font-semibold text-[#FD705C] bg-[#FFCFCC1A] px-2 py-1 rounded"
-                            >
+                                className="text-xs font-semibold text-[#FD705C] bg-[#FFCFCC1A] px-2 py-1 rounded">
                                 {tag}
                             </span>
                         ))}
+                        {project?.technologies.length > 3 && (
+                            <span className="text-xs font-semibold text-[#FD705C] bg-[#FFCFCC1A] px-2 py-1 rounded">
+                                +{project?.technologies.length - 3} more
+                            </span>
+                        )}
                     </div>
 
                     <div className="mt-3.5 flex items-center gap-1.5 flex-wrap">

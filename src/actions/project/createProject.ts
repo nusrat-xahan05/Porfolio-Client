@@ -16,6 +16,7 @@ export const createProject = async (data: FormData) => {
         });
 
         const result = await res.json();
+        console.log('create project action result: ', result);
 
         if (result?.success) {
             revalidateTag("PROJECTS");

@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
@@ -15,7 +15,7 @@ import SingleImageUploader from "./SingleImageUploader";
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 import "react-quill-new/dist/quill.snow.css";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Plus, Trash2 } from "lucide-react";
 import { updateProjectBySlug } from "@/actions/project/updateProjectBySlug";
 import Image from "next/image";
 
@@ -35,6 +35,11 @@ const projectZodSchema = z.object({
         .refine((val) => val.replace(/<(.|\n)*?>/g, "").trim().length > 10, {
             message: "Description must be at least 10 characters",
         }),
+
+    features: z.array(
+        z.object({
+            value: z.string().min(2, "Feature value is required"),
+        })).min(2, "At least two feature is required"),
 
     thumbnail: z
         .string()
@@ -64,6 +69,7 @@ interface UpdateProjectFormProps {
         _id: string;
         title: string;
         description: string;
+        features: string[];
         githubLink: string;
         liveSite: string;
         thumbnail?: string;
@@ -81,6 +87,9 @@ export default function UpdateProjectForm({ project }: UpdateProjectFormProps) {
         defaultValues: {
             title: project.title || "",
             description: project.description || "",
+            features: project.features?.map((item) => ({ value: item })) || [
+                { value: "" },
+            ],
             thumbnail: project.thumbnail || "",
             githubLink: project.githubLink || "",
             liveSite: project.liveSite || "",
@@ -88,11 +97,17 @@ export default function UpdateProjectForm({ project }: UpdateProjectFormProps) {
         },
     });
 
+    const { fields: includedFields, append: appendFeatures, remove: removeFeatures
+    } = useFieldArray({
+        control: form.control, name: "features",
+    });
+
     const onSubmit = async (values: z.infer<typeof projectZodSchema>) => {
         const formData = new FormData();
 
         formData.append("title", values.title);
         formData.append("description", values.description);
+        values?.features?.forEach((feature) => formData.append("features", feature.value));
         formData.append("githubLink", values.githubLink);
         formData.append("liveSite", values.liveSite);
         if (image) {
@@ -162,6 +177,55 @@ export default function UpdateProjectForm({ project }: UpdateProjectFormProps) {
                                 </FormItem>
                             )}
                         />
+                    </div>
+
+                    <div>
+                        <div className="flex justify-between">
+                            <FormLabel>Project Features</FormLabel>
+                            <Button
+                                type="button"
+                                variant="outline"
+                                size="icon"
+                                onClick={() => appendFeatures({ value: "" })}
+                            >
+                                <Plus />
+                            </Button>
+                        </div>
+
+                        <div className="space-y-1.5">
+                            {includedFields.map((item, index) => (
+                                <div className="flex gap-2" key={item.id}>
+                                    <FormField
+                                        control={form.control}
+                                        name={`features.${index}.value`}
+                                        render={({ field }) => (
+                                            <FormItem className="flex-1">
+                                                <FormControl>
+                                                    <Input {...field} />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <Button
+                                        onClick={() => removeFeatures(index)}
+                                        variant="destructive"
+                                        size="icon"
+                                        className="!bg-red-700"
+                                        type="button"
+                                        disabled={includedFields.length <= 2}
+                                    >
+                                        <Trash2 />
+                                    </Button>
+                                </div>
+                            ))}
+                        </div>
+
+                        {form.formState.errors.features?.message && (
+                            <p className="text-sm font-medium text-red-600 mt-1">
+                                {form.formState.errors.features.message as string}
+                            </p>
+                        )}
                     </div>
 
                     <div className="mt-6 flex flex-col gap-6">

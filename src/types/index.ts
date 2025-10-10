@@ -14,6 +14,7 @@ export interface ProjectProps {
     title: string;
     slug?: string;
     description: string;
+    features: string[];
     thumbnail?: string;
     githubLink: string;
     liveSite: string;

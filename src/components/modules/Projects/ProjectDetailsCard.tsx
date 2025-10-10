@@ -57,6 +57,18 @@ export default async function ProjectDetailsCard({ project }: { project: Project
         {parse(project.description)}
       </article>
 
+      <div>
+        <h3 className="text-base font-semibold mb-3">Features: </h3>
+        <ul className="space-y-1">
+          {project?.features?.map((item, index) => (
+            <li key={index} className="flex items-center">
+              <span className="text-[#FD705C] mr-2">✓</span>
+              {item}
+            </li>
+          ))}
+        </ul>
+      </div>
+
       {/* Tags */}
       <div className="flex flex-wrap items-center gap-2 mt-10 pt-6 border-t border-[#FD705C]/30">
         {project?.technologies?.map((tag, idx) => (

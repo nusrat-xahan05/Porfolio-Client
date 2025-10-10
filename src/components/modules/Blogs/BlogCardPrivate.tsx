@@ -48,14 +48,18 @@ export default async function BlogCardPrivate({ blog }: { blog: BlogProps }) {
                     </div>
 
                     <div className="flex flex-wrap gap-2 mb-4">
-                        {blog?.tags.map((tag, idx) => (
+                        {blog?.tags.slice(0, 3).map((tag, idx) => (
                             <span
                                 key={idx}
-                                className="text-xs font-semibold text-[#FD705C] bg-[#FFCFCC1A] px-2 py-1 rounded"
-                            >
+                                className="text-xs font-semibold text-[#FD705C] bg-[#FFCFCC1A] px-2 py-1 rounded">
                                 {tag}
                             </span>
                         ))}
+                        {blog?.tags.length > 3 && (
+                            <span className="text-xs font-semibold text-[#FD705C] bg-[#FFCFCC1A] px-2 py-1 rounded">
+                                +{blog?.tags.length - 3} more
+                            </span>
+                        )}
                     </div>
 
                     <div className="mt-3.5 flex items-center justify-between gap-2 flex-wrap">
