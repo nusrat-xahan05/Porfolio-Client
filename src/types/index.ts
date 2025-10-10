@@ -20,3 +20,13 @@ export interface ProjectProps {
     liveSite: string;
     technologies: string[];
 }
+
+export interface UserProps {
+    _id?: string;
+    name: string;
+    email: string;
+    role: string;
+    isVerified?: boolean;
+
+    techSkills: string[];
+}

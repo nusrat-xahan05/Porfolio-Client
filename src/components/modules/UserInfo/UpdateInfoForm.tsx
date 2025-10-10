@@ -1,134 +1,91 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import SingleImageUploader from "./SingleImageUploader";
-
-const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
-import "react-quill-new/dist/quill.snow.css";
 import Link from "next/link";
 import { ArrowLeft, Plus, Trash2 } from "lucide-react";
-import { updateProjectBySlug } from "@/actions/project/updateProjectBySlug";
-import Image from "next/image";
+import { updateInfoByEmail } from "@/actions/userInfo/updateInfoByEmail";
 
 
-// Simple URL regex (matches most http/https URLs)
-const urlRegex = /^https?:\/\/[^\s/$.?#].[^\s]*$/i;
-const projectZodSchema = z.object({
-    title: z.string({
+
+const updateUserInfoZodSchema = z.object({
+    name: z.string({
         error: (issue) =>
             issue.input === undefined
-                ? "Title is required"
-                : "Title must be a string",
-    }).min(5, { message: "Title must be at least 5 characters" }),
+                ? "Name is required"
+                : "Name must be a string",
+    }).min(3, { message: "Name must be at least 3 characters" }),
 
-    description: z
-        .string()
-        .refine((val) => val.replace(/<(.|\n)*?>/g, "").trim().length > 10, {
-            message: "Description must be at least 10 characters",
-        }),
-
-    features: z.array(
+    techSkills: z.array(
         z.object({
-            value: z.string().min(2, "Feature value is required"),
-        })).min(2, "At least two feature is required"),
-
-    thumbnail: z
-        .string()
-        .optional(),
-
-    githubLink: z.string({
-        error: (issue) =>
-            issue.input === undefined
-                ? "GitHub link is required"
-                : "GitHub link must be a string",
-    }).regex(urlRegex, { message: "GitHub link must be a valid URL" }),
-
-    liveSite: z.string({
-        error: (issue) =>
-            issue.input === undefined
-                ? "Live site link is required"
-                : "Live site link must be a string",
-    }).regex(urlRegex, { message: "Live site must be a valid URL" }),
-
-    technologies: z
-        .array(z.string().min(1, "Technologies cannot be empty"))
-        .min(2, { message: "At least 2 techs are required" }),
+            value: z.string().min(2, "Skills is required"),
+        })).min(2, "At least two skills is required")
 });
 
-interface UpdateProjectFormProps {
-    project: {
-        _id: string;
-        title: string;
-        description: string;
-        features: string[];
-        githubLink: string;
-        liveSite: string;
-        thumbnail?: string;
-        technologies?: string[];
+
+interface UpdateUserInfoFormProps {
+    userInfo: {
+        name?: string;
+        email: string;
+        role: string;
+        isVerified?: boolean;
+
+        techSkills?: string[];
     };
 }
 
-export default function UpdateProjectForm({ project }: UpdateProjectFormProps) {
-    const router = useRouter();
-    const [image, setImage] = useState<File | null>(null);
-    const [techInput, setTechInput] = useState(project.technologies?.join(",") || "");
 
-    const form = useForm<z.infer<typeof projectZodSchema>>({
-        resolver: zodResolver(projectZodSchema),
+export default function UpdateInfoForm({ userInfo }: UpdateUserInfoFormProps) {
+    const router = useRouter();
+
+    const form = useForm<z.infer<typeof updateUserInfoZodSchema>>({
+        resolver: zodResolver(updateUserInfoZodSchema),
         defaultValues: {
-            title: project.title || "",
-            description: project.description || "",
-            features: project.features?.map((item) => ({ value: item })) || [
+            name: userInfo.name || "",
+            techSkills: userInfo.techSkills?.map((item) => ({ value: item })) || [
                 { value: "" },
             ],
-            thumbnail: project.thumbnail || "",
-            githubLink: project.githubLink || "",
-            liveSite: project.liveSite || "",
-            technologies: project.technologies || [],
+            // description: project.description || "",
+            // githubLink: project.githubLink || "",
+            // liveSite: project.liveSite || "",
+            // techSkills: userInfo.techSkills || [],
         },
     });
 
     const { fields: includedFields, append: appendFeatures, remove: removeFeatures
     } = useFieldArray({
-        control: form.control, name: "features",
+        control: form.control, name: "techSkills",
     });
 
-    const onSubmit = async (values: z.infer<typeof projectZodSchema>) => {
+    const onSubmit = async (values: z.infer<typeof updateUserInfoZodSchema>) => {
         const formData = new FormData();
 
-        formData.append("title", values.title);
-        formData.append("description", values.description);
-        values?.features?.forEach((feature) => formData.append("features", feature.value));
-        formData.append("githubLink", values.githubLink);
-        formData.append("liveSite", values.liveSite);
-        if (image) {
-            formData.append("file", image as File);
-        }
-        values?.technologies?.forEach((tag) => formData.append("technologies", tag));
-
+        formData.append("name", values.name);
+        // formData.append("description", values.description);
+        // formData.append("githubLink", values.githubLink);
+        // formData.append("liveSite", values.liveSite);
+        // values?.technologies?.forEach((tag) => formData.append("technologies", tag));
+        values?.techSkills?.forEach((item) => formData.append("techSkills", item.value));
 
         const toastId = toast.loading("Processing....");
         try {
-            const response = await updateProjectBySlug(project._id, formData);
+            const response = await updateInfoByEmail(formData);
 
             if (response.success) {
                 toast.success(response.message, { id: toastId });
-                router.push("/dashboard/all-projects");
+                router.push("/dashboard/user-info");
             } else {
                 toast.error(response.message, { id: toastId });
             }
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
-            console.error("Update project error:", err);
+            console.error("Update Info error:", err);
             const message =
                 err?.data?.message ||
                 err?.response?.data?.message ||
@@ -145,12 +102,12 @@ export default function UpdateProjectForm({ project }: UpdateProjectFormProps) {
                     {/* Title */}
                     <FormField
                         control={form.control}
-                        name="title"
+                        name="name"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Title</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Type Project Title" {...field} />
+                                    <Input placeholder="Type Your Name" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -158,7 +115,7 @@ export default function UpdateProjectForm({ project }: UpdateProjectFormProps) {
                     />
 
                     {/* Description */}
-                    <div className="mb-14">
+                    {/* <div className="mb-14">
                         <FormField
                             control={form.control}
                             name="description"
@@ -177,11 +134,11 @@ export default function UpdateProjectForm({ project }: UpdateProjectFormProps) {
                                 </FormItem>
                             )}
                         />
-                    </div>
+                    </div> */}
 
                     <div>
                         <div className="flex justify-between">
-                            <FormLabel>Project Features</FormLabel>
+                            <FormLabel>Technical Skills</FormLabel>
                             <Button
                                 type="button"
                                 variant="outline"
@@ -197,7 +154,7 @@ export default function UpdateProjectForm({ project }: UpdateProjectFormProps) {
                                 <div className="flex gap-2" key={item.id}>
                                     <FormField
                                         control={form.control}
-                                        name={`features.${index}.value`}
+                                        name={`techSkills.${index}.value`}
                                         render={({ field }) => (
                                             <FormItem className="flex-1">
                                                 <FormControl>
@@ -221,15 +178,15 @@ export default function UpdateProjectForm({ project }: UpdateProjectFormProps) {
                             ))}
                         </div>
 
-                        {form.formState.errors.features?.message && (
+                        {form.formState.errors.techSkills?.message && (
                             <p className="text-sm font-medium text-red-600 mt-1">
-                                {form.formState.errors.features.message as string}
+                                {form.formState.errors.techSkills.message as string}
                             </p>
                         )}
                     </div>
 
                     <div className="mt-6 flex flex-col gap-6">
-                        <FormField
+                        {/* <FormField
                             control={form.control}
                             name="githubLink"
                             render={({ field }) => (
@@ -247,9 +204,9 @@ export default function UpdateProjectForm({ project }: UpdateProjectFormProps) {
                                     <FormMessage />
                                 </FormItem>
                             )}
-                        />
+                        /> */}
 
-                        <FormField
+                        {/* <FormField
                             control={form.control}
                             name="liveSite"
                             render={({ field }) => (
@@ -267,52 +224,8 @@ export default function UpdateProjectForm({ project }: UpdateProjectFormProps) {
                                     <FormMessage />
                                 </FormItem>
                             )}
-                        />
+                        /> */}
                     </div>
-
-                    {/* Image */}
-                    <div>
-                        <p className="font-medium text-gray-700 mb-2">Thumbnail</p>
-                        {project.thumbnail && !image && (
-                            <div className="mb-3">
-                                <Image
-                                    src={project?.thumbnail}
-                                    alt="Current Thumbnail"
-                                    className="w-40 h-28 object-cover rounded-md shadow"
-                                    width={100}
-                                    height={100}
-                                />
-                            </div>
-                        )}
-                        <SingleImageUploader onChange={setImage} />
-                    </div>
-
-                    <FormField
-                        control={form.control}
-                        name="technologies"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Technologies (comma separated)</FormLabel>
-                                <FormControl>
-                                    <Input
-                                        type="text"
-                                        placeholder="e.g. react,nextjs,typescript"
-                                        value={techInput}
-                                        onChange={(e) => setTechInput(e.target.value)}
-                                        onBlur={() =>
-                                            field.onChange(
-                                                techInput
-                                                    .split(",")
-                                                    .map((tag) => tag.trim())
-                                                    .filter((tag) => tag !== "")
-                                            )
-                                        }
-                                    />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
 
                     {/* Submit */}
                     <div className="flex items-center justify-center gap-3">
