@@ -1,9 +1,11 @@
-import { Button } from "@/components/ui/button";
+"use client"
+
+import Link from "next/link";
 import { FaLaptopCode, FaLightbulb, FaUsers } from "react-icons/fa6";
 
 const AboutMe = () => {
     return (
-        <section className="py-28" id="next-section">
+        <section className="py-28" id="aboutMe">
             <div className="container mx-auto px-4">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center justify-between">
                     {/* Left Side */}
@@ -16,11 +18,11 @@ const AboutMe = () => {
                                 I am a Full Stack Developer with a CSE background, passionate about building scalable and modern web applications. I have hands-on experience in freelancing projects, delivering solutions that combine performance, security, and user-friendly design.
                             </p>
                         </div>
-                        <Button className="p-[1.5px] rounded-[5px] bg-gradient-to-r from-[#f5ebeb] to-[#FD705C] inline-block">
-                            <div className="rounded-[5px] bg-[#07102A] p-2 flex items-center justify-center">
-                                Technical Skills
+                        <Link href="/about" className="p-[1.5px] rounded-[5px] bg-gradient-to-r from-[#f5ebeb] to-[#FD705C] inline-block">
+                            <div className="rounded-[5px] bg-[#07102A] text-white p-2 flex items-center justify-center">
+                                <p className="px-3">See More</p>
                             </div>
-                        </Button>
+                        </Link>
                     </div>
 
                     <div className="flex flex-col gap-6">
@@ -29,9 +31,9 @@ const AboutMe = () => {
                                 <FaLaptopCode className="text-[#FD705C] text-3xl" />
                             </div>
                             <div>
-                                <h4 className="text-lg font-semibold text-gray-300 mb-1">Passionate in Coding</h4>
+                                <h4 className="text-lg font-semibold text-gray-300 mb-1">Frontend Development</h4>
                                 <p className="text-gray-500 text-sm">
-                                    Love solving complex problems with clean and efficient code.
+                                    Crafting engaging and responsive user interfaces to deliver seamless digital experiences across devices.
                                 </p>
                             </div>
                         </div>
@@ -41,9 +43,9 @@ const AboutMe = () => {
                                 <FaLightbulb className="text-[#FD705C] text-3xl" />
                             </div>
                             <div>
-                                <h4 className="text-lg font-semibold text-gray-300 mb-1">Creative Thinker</h4>
+                                <h4 className="text-lg font-semibold text-gray-300 mb-1">Backend Engineering</h4>
                                 <p className="text-gray-500 text-sm">
-                                    Continuously explore new technologies to innovate smarter solutions.
+                                    Design and implement robust, secure, and high-performance RESTful APIs to power efficient data-driven applications.
                                 </p>
                             </div>
                         </div>
@@ -53,9 +55,9 @@ const AboutMe = () => {
                                 <FaUsers className="text-[#FD705C] text-3xl" />
                             </div>
                             <div>
-                                <h4 className="text-lg font-semibold text-gray-300 mb-1">Team Player</h4>
+                                <h4 className="text-lg font-semibold text-gray-300 mb-1">Continuous Learning</h4>
                                 <p className="text-gray-500 text-sm">
-                                    Collaborate effectively to deliver high-quality results on time.
+                                    Constantly practice modern development technologies to stay ahead in the evolving tech landscape.
                                 </p>
                             </div>
                         </div>

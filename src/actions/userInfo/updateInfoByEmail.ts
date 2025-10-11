@@ -19,12 +19,10 @@ export const updateInfoByEmail = async (data: FormData) => {
             headers: {
                 Authorization: `Bearer ${session.user.accessToken}`,
             },
-            // body: JSON.stringify(data),
             body: data,
         });
 
         const result = await res.json();
-        console.log('from action result: ', result);
         if (!res.ok) {
             return {
                 success: false,

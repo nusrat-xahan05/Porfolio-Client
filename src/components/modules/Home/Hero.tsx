@@ -12,7 +12,7 @@ import { motion } from 'framer-motion';
 
 const Hero = () => {
     const scrollToNextSection = () => {
-        const section = document.getElementById('next-section');
+        const section = document.getElementById('aboutMe');
         section?.scrollIntoView({ behavior: 'smooth' });
     };
 
@@ -46,7 +46,7 @@ const Hero = () => {
                                         <FaGithub className="size-[18px] fill-[#f5ebeb]" />
                                     </div>
                                 </Link>
-                                <Link href="#" className="p-[1.5px] rounded-[5px] bg-gradient-to-r from-[#f5ebeb] to-[#FD705C] inline-block">
+                                <Link href="https://discordapp.com/users/nusrat_jahan13" className="p-[1.5px] rounded-[5px] bg-gradient-to-r from-[#f5ebeb] to-[#FD705C] inline-block">
                                     <div className="rounded-[5px] bg-[#07102A] p-2 flex items-center justify-center">
                                         <FaDiscord className="size-[18px] fill-[#f5ebeb]" />
                                     </div>
