@@ -21,6 +21,13 @@ export interface ProjectProps {
     technologies: string[];
 }
 
+export interface IEducation {
+  level: string;
+  institution: string;
+  startDate: string;
+  endDate: string;
+}
+
 export interface UserProps {
     _id?: string;
     name: string;
@@ -28,5 +35,6 @@ export interface UserProps {
     role: string;
     isVerified?: boolean;
 
+    education: IEducation[];
     techSkills: string[];
 }

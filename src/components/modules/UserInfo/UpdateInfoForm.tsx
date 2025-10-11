@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Plus, Trash2 } from "lucide-react";
 import { updateInfoByEmail } from "@/actions/userInfo/updateInfoByEmail";
+import { IEducation } from "@/types";
 
 
 
@@ -21,6 +22,15 @@ const updateUserInfoZodSchema = z.object({
                 ? "Name is required"
                 : "Name must be a string",
     }).min(3, { message: "Name must be at least 3 characters" }),
+
+    education: z.array(
+        z.object({
+            level: z.string().min(1, "Education level is required"),
+            institution: z.string().min(1, "Institution name is required"),
+            startDate: z.string().min(1, "Start date is required"),
+            endDate: z.string().min(1, "End date is required"),
+        })
+    ).min(1, "At least one education record is required"),
 
     techSkills: z.array(
         z.object({
@@ -36,6 +46,7 @@ interface UpdateUserInfoFormProps {
         role: string;
         isVerified?: boolean;
 
+        education: IEducation[];
         techSkills?: string[];
     };
 }
@@ -48,6 +59,9 @@ export default function UpdateInfoForm({ userInfo }: UpdateUserInfoFormProps) {
         resolver: zodResolver(updateUserInfoZodSchema),
         defaultValues: {
             name: userInfo.name || "",
+            education: userInfo.education || [
+                { level: "", institution: "", startDate: "", endDate: "" },
+            ],
             techSkills: userInfo.techSkills?.map((item) => ({ value: item })) || [
                 { value: "" },
             ],
@@ -56,6 +70,11 @@ export default function UpdateInfoForm({ userInfo }: UpdateUserInfoFormProps) {
             // liveSite: project.liveSite || "",
             // techSkills: userInfo.techSkills || [],
         },
+    });
+
+    const { fields: educationFields, append: appendEducation, remove: removeEducation,
+    } = useFieldArray({
+        control: form.control, name: "education",
     });
 
     const { fields: includedFields, append: appendFeatures, remove: removeFeatures
@@ -71,6 +90,12 @@ export default function UpdateInfoForm({ userInfo }: UpdateUserInfoFormProps) {
         // formData.append("githubLink", values.githubLink);
         // formData.append("liveSite", values.liveSite);
         // values?.technologies?.forEach((tag) => formData.append("technologies", tag));
+        values?.education?.forEach((edu, idx) => {
+            formData.append(`education[${idx}][level]`, edu.level);
+            formData.append(`education[${idx}][institution]`, edu.institution);
+            formData.append(`education[${idx}][startDate]`, edu.startDate);
+            formData.append(`education[${idx}][endDate]`, edu.endDate);
+        });
         values?.techSkills?.forEach((item) => formData.append("techSkills", item.value));
 
         const toastId = toast.loading("Processing....");
@@ -114,27 +139,111 @@ export default function UpdateInfoForm({ userInfo }: UpdateUserInfoFormProps) {
                         )}
                     />
 
-                    {/* Description */}
-                    {/* <div className="mb-14">
-                        <FormField
-                            control={form.control}
-                            name="description"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Description</FormLabel>
-                                    <FormControl>
-                                        <ReactQuill
-                                            theme="snow"
-                                            value={field.value || ""}
-                                            onChange={(value) => field.onChange(value)}
-                                            placeholder="Write your project description..."
+                    {/* Education */}
+                    <div className="mt-8">
+                        <div className="flex justify-between items-center mb-2">
+                            <FormLabel>Education</FormLabel>
+                            <Button
+                                type="button"
+                                variant="outline"
+                                size="icon"
+                                onClick={() =>
+                                    appendEducation({ level: "", institution: "", startDate: "", endDate: "" })
+                                }
+                            >
+                                <Plus />
+                            </Button>
+                        </div>
+
+                        <div className="space-y-4">
+                            {educationFields.map((item, index) => (
+                                <div key={item.id} className="grid grid-cols-1 md:grid-cols-2 gap-3 border p-3 rounded-md bg-[rgba(255,207,204,0.2)] relative">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 w-full">
+                                        {/* Level */}
+                                        <FormField
+                                            control={form.control}
+                                            name={`education.${index}.level`}
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>Level</FormLabel>
+                                                    <FormControl>
+                                                        <Input placeholder="e.g. BSc in CSE" {...field} />
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
                                         />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    </div> */}
+
+                                        {/* Institution */}
+                                        <FormField
+                                            control={form.control}
+                                            name={`education.${index}.institution`}
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>Institution</FormLabel>
+                                                    <FormControl>
+                                                        <Input placeholder="e.g. ABC University" {...field} />
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                    </div>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 w-full">
+                                        {/* Start Date */}
+                                        <FormField
+                                            control={form.control}
+                                            name={`education.${index}.startDate`}
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>Start Year</FormLabel>
+                                                    <FormControl>
+                                                        <Input type="text" placeholder="e.g. 2020" {...field} />
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+
+                                        {/* End Date */}
+                                        <FormField
+                                            control={form.control}
+                                            name={`education.${index}.endDate`}
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>End Year</FormLabel>
+                                                    <FormControl>
+                                                        <Input type="text" placeholder="e.g. 2024" {...field} />
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                    </div>
+
+                                    {/* Remove button */}
+                                    <Button
+                                        onClick={() => removeEducation(index)}
+                                        variant="destructive"
+                                        size="icon"
+                                        type="button"
+                                        className="absolute top-2 right-2 !bg-red-700"
+                                        disabled={educationFields.length <= 1}
+                                    >
+                                        <Trash2 />
+                                    </Button>
+                                </div>
+                            ))}
+                        </div>
+
+                        {form.formState.errors.education?.message && (
+                            <p className="text-sm font-medium text-red-600 mt-1">
+                                {form.formState.errors.education.message as string}
+                            </p>
+                        )}
+                    </div>
+
 
                     <div>
                         <div className="flex justify-between">

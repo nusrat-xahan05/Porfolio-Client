@@ -23,7 +23,7 @@ export default function Navbar() {
 
   return (
     <header className="fixed top-0 left-0 w-full text-white z-50 bg-[#07102A]/90 backdrop-blur-md shadow-md">
-      <div className="mx-auto max-w-7xl flex items-center justify-between py-5 px-4 md:px-6">
+      <div className="mx-auto container flex items-center justify-between py-5 px-4 2xl:px-14">
         {/* Left side */}
         <Link className="text-primary hover:text-primary/90" href="/"><Logo /></Link>
 
