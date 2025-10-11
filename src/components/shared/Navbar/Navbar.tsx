@@ -31,7 +31,7 @@ export default function Navbar() {
         <div className="flex items-center justify-end gap-6">
           {/* Main nav */}
           <NavigationMenu className="hidden lg:flex items-center">
-            <NavigationMenuList className="gap-x-5">
+            <NavigationMenuList className="gap-x-6 xl:gap-x-7">
               {navigationLinks.map((link, index) => (
                 <NavigationMenuItem key={index}>
                   <NavigationMenuLink asChild className="text-[17px] font-medium hover:bg-[#FFCFCC] hover:text-[#07102A] transition-colors duration-300">

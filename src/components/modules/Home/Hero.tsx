@@ -18,7 +18,7 @@ const Hero = () => {
 
     return (
         <section className="xl:pt-[70px] relative">
-            <div className="container mx-auto px-4">
+            <div className="container mx-auto px-4 2xl:px-14">
                 <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-x-8">
                     {/* Banner Content */}
                     <div className="flex flex-col justify-center text-center lg:text-left mx-auto lg:mx-0 pt-6">
@@ -41,7 +41,7 @@ const Hero = () => {
                             </Link>
 
                             <div className="flex items-center gap-x-2 justify-center lg:justify-start">
-                                <Link href="#" className="p-[1.5px] rounded-[5px] bg-gradient-to-r from-[#f5ebeb] to-[#FD705C] inline-block">
+                                <Link href="https://github.com/nusrat-xahan05" className="p-[1.5px] rounded-[5px] bg-gradient-to-r from-[#f5ebeb] to-[#FD705C] inline-block">
                                     <div className="rounded-[5px] bg-[#07102A] p-2 flex items-center justify-center">
                                         <FaGithub className="size-[18px] fill-[#f5ebeb]" />
                                     </div>
@@ -61,7 +61,7 @@ const Hero = () => {
                     </div>
 
                     {/* Banner Image */}
-                    <div className="hidden lg:flex relative justify-center">
+                    <div className="hidden bg-red-300 lg:flex relative justify-center">
                         <Image src={profileImage} alt="Profile-Image" className="rounded-lg" />
                     </div>
                 </div>

@@ -35,6 +35,7 @@ export interface UserProps {
     role: string;
     isVerified?: boolean;
 
+    contactEmail: string;
     education: IEducation[];
     techSkills: string[];
 }
