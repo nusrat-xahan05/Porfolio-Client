@@ -50,7 +50,7 @@ export default async function HomePage() {
                 <h3 className="text-4xl sm:text-5xl xl:text-[56px] xl:leading-[88px] tracking-[-2px] font-bold mb-4 text-white">Technical
                     <span className="bg-gradient-to-r from-[#FFCFCC] via-[#FD705C] to-[#FF2056] bg-clip-text text-transparent"> Skills</span>
                 </h3>
-                <div className="mt-7 mb-7 max-w-4xl mx-auto w-full">
+                <div className="mt-7 mb-7 max-w-3xl xl:max-w-4xl mx-auto w-full">
                     {userInfo ? (
                         <SkillsCard userInfo={userInfo} />
                     ) : (

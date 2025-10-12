@@ -6,6 +6,7 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
     title: "Nusrat Jahan | Portfolio",
     description: "Explore blogs, projects and information",
+    icons: null,
 };
 
 export default function PublicLayout({

@@ -5,8 +5,8 @@ import { FaLaptopCode, FaLightbulb, FaUsers } from "react-icons/fa6";
 
 const AboutMe = () => {
     return (
-        <section className="py-28" id="aboutMe">
-            <div className="container mx-auto px-4">
+        <section className="my-24 py-16 bg-[#0B1635]" id="aboutMe">
+            <div className="container mx-auto px-4 2xl:px-14">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center justify-between">
                     {/* Left Side */}
                     <div className="space-y-6 py-4">

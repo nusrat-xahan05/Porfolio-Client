@@ -12,6 +12,7 @@ export const metadata: Metadata = {
   title: "Nusrat Jahan",
   description: "Full-stack developer portfolio and blog",
   keywords: ["portfolio", "full-stack", "next.js", "react", "developer"],
+  icons: null,
 };
 
 export default function RootLayout({
