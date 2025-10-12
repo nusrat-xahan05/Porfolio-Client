@@ -1,9 +1,10 @@
 import { Metadata } from "next";
 import { FaGraduationCap, FaEnvelope, FaGithub, FaDiscord } from "react-icons/fa6";
+import { RiLinkedinFill } from "react-icons/ri";
 import SkillsCard from "@/components/modules/UserInfo/SkillsCard";
 import { IEducation } from "@/types";
 import Link from "next/link";
-import { RiLinkedinFill } from "react-icons/ri";
+import parse from "html-react-parser";
 
 export const metadata: Metadata = {
     title: "About Me | Nusrat Jahan",
@@ -20,36 +21,58 @@ const AboutPage = async () => {
     return (
         <div className="bg-[#07102A] py-30 px-4 min-h-screen text-white">
             {/* HEADER */}
-            <section className="text-center">
+            <section className="text-center mb-20">
                 <h3 className="text-4xl sm:text-5xl xl:text-[56px] xl:leading-[88px] tracking-[-2px] font-bold mb-4 text-white">
-                    Get to <span className="bg-gradient-to-r from-[#FFCFCC] via-[#FD705C] to-[#FF2056] bg-clip-text text-transparent">Know Me</span>
+                    <span className="bg-gradient-to-r from-[#FFCFCC] via-[#FD705C] to-[#FF2056] bg-clip-text text-transparent italic">
+                        {userInfo?.jobTitle}
+                    </span>
                 </h3>
-                <p className="text-gray-400 max-w-2xl mx-auto mt-7 mb-5">
-                    Hi, I&apos;m <span className="font-semibold text-white">{userInfo?.name}</span>, a passionate
-                    <span className="text-[#FD705C] font-semibold"> Full Stack Developer</span> with a background in Computer Science & Engineering.
-                    I enjoy turning ideas into functional, user-friendly applications that make an impact.
-                </p>
 
-                <div className="flex justify-center gap-4">
+
+                <div className="text-gray-300 max-w-3xl mx-auto mt-7 mb-5 leading-relaxed">
+                    {userInfo?.description ? parse(userInfo.description) : null}
+                </div>
+
+                
+                <div className="flex flex-col md:flex-row justify-center items-center gap-4 mt-6">
                     <div className="flex items-center gap-2 bg-[#0E1A3A] px-4 py-2 rounded-lg text-sm text-gray-300">
                         <FaEnvelope className="text-[#FD705C]" /> {userInfo?.contactEmail}
                     </div>
-                    <div className="flex items-center gap-x-2 justify-center lg:justify-start">
-                        <Link href="https://github.com/nusrat-xahan05" className="p-[1.5px] rounded-[5px] bg-gradient-to-r from-[#f5ebeb] to-[#FD705C] inline-block">
-                            <div className="rounded-[5px] bg-[#07102A] p-2 flex items-center justify-center">
-                                <FaGithub className="size-[18px] fill-[#f5ebeb]" />
-                            </div>
-                        </Link>
-                        <Link href="https://discordapp.com/users/nusrat_jahan13" className="p-[1.5px] rounded-[5px] bg-gradient-to-r from-[#f5ebeb] to-[#FD705C] inline-block">
-                            <div className="rounded-[5px] bg-[#07102A] p-2 flex items-center justify-center">
-                                <FaDiscord className="size-[18px] fill-[#f5ebeb]" />
-                            </div>
-                        </Link>
-                        <Link href="#" className="p-[1.5px] rounded-[5px] bg-gradient-to-r from-[#f5ebeb] to-[#FD705C] inline-block">
-                            <div className="rounded-[5px] bg-[#07102A] p-2 flex items-center justify-center">
-                                <RiLinkedinFill className="size-[18px] fill-[#f5ebeb]" />
-                            </div>
-                        </Link>
+
+                    <div className="flex items-center gap-x-3 justify-center lg:justify-start">
+                        {userInfo?.githubLink && (
+                            <Link
+                                href={userInfo.githubLink}
+                                target="_blank"
+                                className="p-[1.5px] rounded-[5px] bg-gradient-to-r from-[#f5ebeb] to-[#FD705C] inline-block"
+                            >
+                                <div className="rounded-[5px] bg-[#07102A] p-2 flex items-center justify-center">
+                                    <FaGithub className="size-[18px] fill-[#f5ebeb]" />
+                                </div>
+                            </Link>
+                        )}
+                        {userInfo?.discordLink && (
+                            <Link
+                                href={userInfo.discordLink}
+                                target="_blank"
+                                className="p-[1.5px] rounded-[5px] bg-gradient-to-r from-[#f5ebeb] to-[#FD705C] inline-block"
+                            >
+                                <div className="rounded-[5px] bg-[#07102A] p-2 flex items-center justify-center">
+                                    <FaDiscord className="size-[18px] fill-[#f5ebeb]" />
+                                </div>
+                            </Link>
+                        )}
+                        {userInfo?.linkedinLink && (
+                            <Link
+                                href={userInfo.linkedinLink}
+                                target="_blank"
+                                className="p-[1.5px] rounded-[5px] bg-gradient-to-r from-[#f5ebeb] to-[#FD705C] inline-block"
+                            >
+                                <div className="rounded-[5px] bg-[#07102A] p-2 flex items-center justify-center">
+                                    <RiLinkedinFill className="size-[18px] fill-[#f5ebeb]" />
+                                </div>
+                            </Link>
+                        )}
                     </div>
                 </div>
             </section>
@@ -57,7 +80,10 @@ const AboutPage = async () => {
             {/* EDUCATION SECTION */}
             <section className="my-20 py-16 bg-[#0B1635]">
                 <h3 className="text-center text-3xl sm:text-4xl xl:text-[40px] tracking-[-2px] font-semibold mb-10 text-white">
-                    Education <span className="bg-gradient-to-r from-[#FFCFCC] via-[#FD705C] to-[#FF2056] bg-clip-text text-transparent">Journey</span>
+                    Education{" "}
+                    <span className="bg-gradient-to-r from-[#FFCFCC] via-[#FD705C] to-[#FF2056] bg-clip-text text-transparent">
+                        Journey
+                    </span>
                 </h3>
 
                 <div className="max-w-3xl mx-auto space-y-6">
@@ -84,7 +110,10 @@ const AboutPage = async () => {
             {/* SKILLS SECTION */}
             <section className="text-center">
                 <h3 className="text-center text-3xl sm:text-4xl xl:text-[40px] tracking-[-2px] font-semibold mb-10 text-white">
-                    Technical <span className="bg-gradient-to-r from-[#FFCFCC] via-[#FD705C] to-[#FF2056] bg-clip-text text-transparent">Skills</span>
+                    Technical{" "}
+                    <span className="bg-gradient-to-r from-[#FFCFCC] via-[#FD705C] to-[#FF2056] bg-clip-text text-transparent">
+                        Skills
+                    </span>
                 </h3>
 
                 <div className="max-w-5xl mx-auto">

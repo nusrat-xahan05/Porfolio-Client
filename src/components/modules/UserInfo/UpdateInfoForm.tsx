@@ -12,8 +12,14 @@ import Link from "next/link";
 import { ArrowLeft, Plus, Trash2 } from "lucide-react";
 import { updateInfoByEmail } from "@/actions/userInfo/updateInfoByEmail";
 import { IEducation } from "@/types";
+const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
+import "react-quill-new/dist/quill.snow.css";
+import dynamic from "next/dynamic";
 
 
+// Simple URL regex (matches most http/https URLs)
+const urlRegex = /^https?:\/\/[^\s/$.?#].[^\s]*$/i;
+const emailRegex = /^(?!\.)(?!.*\.\.)([a-z0-9_'+\-\.]*)[a-z0-9_+-]@([a-z0-9][a-z0-9\-]*\.)+[a-z]{2,}$/i;
 
 const updateUserInfoZodSchema = z.object({
     name: z.string({
@@ -22,6 +28,37 @@ const updateUserInfoZodSchema = z.object({
                 ? "Name is required"
                 : "Name must be a string",
     }).min(3, { message: "Name must be at least 3 characters" }),
+
+    jobTitle: z.string({
+        error: (issue) =>
+            issue.input === undefined
+                ? "Job Title is required"
+                : "Job Title must be a string",
+    }).min(3, { message: "Job Title must be at least 3 characters" }),
+
+    description: z
+        .string()
+        .refine((val) => val.replace(/<(.|\n)*?>/g, "").trim().length > 10, {
+            message: "Description must be at least 10 characters",
+        }),
+
+    contactEmail: z
+        .email({ message: "Invalid Email Address Format" })
+        .regex(emailRegex, { message: "Invalid Email Address Format" }
+        )
+        .transform((val) => val.toLowerCase()),
+
+    githubLink: z
+        .string()
+        .regex(urlRegex, { message: "GitHub link must be a valid URL" }),
+
+    discordLink: z
+        .string()
+        .regex(urlRegex, { message: "Discord link must be a valid URL" }),
+
+    linkedinLink: z
+        .string()
+        .regex(urlRegex, { message: "Linkedin link must be a valid URL" }),
 
     education: z.array(
         z.object({
@@ -42,10 +79,12 @@ const updateUserInfoZodSchema = z.object({
 interface UpdateUserInfoFormProps {
     userInfo: {
         name?: string;
-        email: string;
-        role: string;
-        isVerified?: boolean;
-
+        jobTitle: string;
+        description: string;
+        contactEmail: string;
+        githubLink: string;
+        discordLink: string;
+        linkedinLink: string;
         education: IEducation[];
         techSkills?: string[];
     };
@@ -59,16 +98,18 @@ export default function UpdateInfoForm({ userInfo }: UpdateUserInfoFormProps) {
         resolver: zodResolver(updateUserInfoZodSchema),
         defaultValues: {
             name: userInfo.name || "",
+            jobTitle: userInfo.jobTitle || "",
+            description: userInfo.description || "",
+            contactEmail: userInfo.contactEmail || "",
+            githubLink: userInfo.githubLink || "",
+            discordLink: userInfo.discordLink || "",
+            linkedinLink: userInfo.linkedinLink || "",
             education: userInfo.education || [
                 { level: "", institution: "", startDate: "", endDate: "" },
             ],
             techSkills: userInfo.techSkills?.map((item) => ({ value: item })) || [
                 { value: "" },
             ],
-            // description: project.description || "",
-            // githubLink: project.githubLink || "",
-            // liveSite: project.liveSite || "",
-            // techSkills: userInfo.techSkills || [],
         },
     });
 
@@ -86,10 +127,12 @@ export default function UpdateInfoForm({ userInfo }: UpdateUserInfoFormProps) {
         const formData = new FormData();
 
         formData.append("name", values.name);
-        // formData.append("description", values.description);
-        // formData.append("githubLink", values.githubLink);
-        // formData.append("liveSite", values.liveSite);
-        // values?.technologies?.forEach((tag) => formData.append("technologies", tag));
+        formData.append("jobTitle", values.jobTitle);
+        formData.append("description", values.description);
+        formData.append("contactEmail", values.contactEmail);
+        formData.append("githubLink", values.githubLink);
+        formData.append("discordLink", values.discordLink);
+        formData.append("linkedinLink", values.linkedinLink);
         values?.education?.forEach((edu, idx) => {
             formData.append(`education[${idx}][level]`, edu.level);
             formData.append(`education[${idx}][institution]`, edu.institution);
@@ -124,20 +167,59 @@ export default function UpdateInfoForm({ userInfo }: UpdateUserInfoFormProps) {
         <div className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-lg space-y-4">
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 w-full">
-                    {/* Title */}
-                    <FormField
-                        control={form.control}
-                        name="name"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Title</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="Type Your Name" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {/* Name */}
+                        <FormField
+                            control={form.control}
+                            name="name"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Name</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Type Your Name" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        {/* Job Title */}
+                        <FormField
+                            control={form.control}
+                            name="jobTitle"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Job Title</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Type Your Title" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+
+                    {/* Description */}
+                    <div className="mb-14">
+                        <FormField
+                            control={form.control}
+                            name="description"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Description</FormLabel>
+                                    <FormControl>
+                                        <ReactQuill
+                                            theme="snow"
+                                            value={field.value || ""}
+                                            onChange={(value) => field.onChange(value)}
+                                            placeholder="Write your about description..."
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
 
                     {/* Education */}
                     <div className="mt-8">
@@ -157,7 +239,7 @@ export default function UpdateInfoForm({ userInfo }: UpdateUserInfoFormProps) {
 
                         <div className="space-y-4">
                             {educationFields.map((item, index) => (
-                                <div key={item.id} className="grid grid-cols-1 md:grid-cols-2 gap-3 border p-3 rounded-md bg-[rgba(255,207,204,0.2)] relative">
+                                <div key={item.id} className="grid grid-cols-1 gap-3 border p-3 rounded-md bg-[rgba(255,207,204,0.2)] relative">
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3 w-full">
                                         {/* Level */}
                                         <FormField
@@ -190,7 +272,7 @@ export default function UpdateInfoForm({ userInfo }: UpdateUserInfoFormProps) {
                                         />
                                     </div>
 
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 w-full">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                         {/* Start Date */}
                                         <FormField
                                             control={form.control}
@@ -244,6 +326,67 @@ export default function UpdateInfoForm({ userInfo }: UpdateUserInfoFormProps) {
                         )}
                     </div>
 
+                    <div className="mt-6 flex flex-col gap-6">
+                        <FormField
+                            control={form.control}
+                            name="githubLink"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="text-[#07102A] font-medium">
+                                        Github Profile URL
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="url"
+                                            placeholder="e.g. https://github.com/nusrat-xahan05"
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="discordLink"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="text-[#07102A] font-medium">
+                                        Discord Profile URL
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="url"
+                                            placeholder="e.g. https://discord.com/users/my-profile"
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="linkedinLink"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="text-[#07102A] font-medium">
+                                        Linkedin Profile URL
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="url"
+                                            placeholder="e.g. https://linkedin.com/my-profile"
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
 
                     <div>
                         <div className="flex justify-between">
@@ -294,47 +437,6 @@ export default function UpdateInfoForm({ userInfo }: UpdateUserInfoFormProps) {
                         )}
                     </div>
 
-                    <div className="mt-6 flex flex-col gap-6">
-                        {/* <FormField
-                            control={form.control}
-                            name="githubLink"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className="text-[#07102A] font-medium">
-                                        Github Site URL
-                                    </FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            type="url"
-                                            placeholder="e.g. https://github.com/nusrat-xahan05/my-project"
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        /> */}
-
-                        {/* <FormField
-                            control={form.control}
-                            name="liveSite"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className="text-[#07102A] font-medium">
-                                        Live Site URL
-                                    </FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            type="url"
-                                            placeholder="e.g. https://myproject.vercel.app"
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        /> */}
-                    </div>
 
                     {/* Submit */}
                     <div className="flex items-center justify-center gap-3">
