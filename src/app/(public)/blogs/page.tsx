@@ -17,8 +17,8 @@ const AllBlogsPage = async () => {
   const { data: blogs } = await res.json();
 
   return (
-    <div className="bg-[#07102A] py-30 px-4">
-      <div className="max-w-7xl mx-auto">
+    <div className="bg-[#07102A] py-30">
+      <div className="container mx-auto px-4 2xl:px-14">
         <h3 className="text-center text-4xl sm:text-5xl xl:text-[56px] xl:leading-[88px] tracking-[-2px] font-bold mb-4 text-white">Featured
           <span className="bg-gradient-to-r from-[#FFCFCC] via-[#FD705C] to-[#FF2056] bg-clip-text text-transparent"> Blogs</span>
         </h3>

@@ -35,7 +35,12 @@ export interface UserProps {
     role: string;
     isVerified?: boolean;
 
+    jobTitle: string;
+    description: string;
     contactEmail: string;
+    githubLink: string;
+    discordLink: string;
+    linkedinLink: string;
     education: IEducation[];
     techSkills: string[];
 }

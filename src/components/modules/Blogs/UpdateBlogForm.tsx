@@ -77,10 +77,10 @@ export default function UpdateBlogForm({ blog }: UpdateBlogFormProps) {
             const response = await updateBlogBySlug(blog._id, formData);
 
             if (response.success) {
-                toast.success(response.message, {id: toastId});
+                toast.success(response.message, { id: toastId });
                 router.push("/dashboard/all-blogs");
             } else {
-                toast.error(response.message, {id: toastId});
+                toast.error(response.message, { id: toastId });
             }
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
@@ -90,7 +90,7 @@ export default function UpdateBlogForm({ blog }: UpdateBlogFormProps) {
                 err?.response?.data?.message ||
                 err?.message ||
                 "Something went wrong";
-            toast.error(message, {id: toastId});
+            toast.error(message, { id: toastId });
         }
     };
 
@@ -136,7 +136,7 @@ export default function UpdateBlogForm({ blog }: UpdateBlogFormProps) {
                     </div>
 
                     {/* Image */}
-                    <div>
+                    <div className="pt-6 sm:pt-1.5">
                         <p className="font-medium text-gray-700 mb-2">Thumbnail</p>
                         {blog.thumbnail && !image && (
                             <div className="mb-3">
@@ -190,7 +190,7 @@ export default function UpdateBlogForm({ blog }: UpdateBlogFormProps) {
 
                         <Button
                             type="submit"
-                            className="bg-green-600 text-white font-medium py-2 rounded-md hover:bg-green-700 transition">Update
+                            className="bg-[#FD705C] text-white font-medium py-2 rounded-md hover:bg-[#07102A] transition-colors duration-300">Update
                         </Button>
                     </div>
                 </form>

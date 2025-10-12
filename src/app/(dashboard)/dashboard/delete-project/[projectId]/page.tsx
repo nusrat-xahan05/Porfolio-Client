@@ -7,7 +7,7 @@ const DeleteProjectPage = async ({ params }: { params: Promise<{ projectId: stri
     const project = await getProjectById(projectId);
 
     return (
-        <div className="w-[500px] mx-auto my-30">
+        <div className="max-w-[500px] mx-auto my-30 px-4">
             <div className="bg-red-50 border border-red-100 p-10 rounded-xl shadow-sm ">
                 <div className="mb-7">
                     <h3 className='text-lg xl:text-3xl tracking-[-2px] font-bold text-gray-800'>{project?.title}</h3>

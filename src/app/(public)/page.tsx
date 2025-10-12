@@ -42,7 +42,15 @@ export default async function HomePage() {
 
     return (
         <div className="bg-[#07102A]">
-            <Hero></Hero>
+
+            {/* BANNER/HERO SECTION */}
+            {userInfo ? (
+                <Hero userInfo={userInfo}></Hero>
+            ) : (
+                <p className="text-white italic text-center">Loading Banner...</p>
+            )}
+
+            {/* ABOUT ME SECTION */}
             <AboutMe></AboutMe>
 
             {/* TECHNICAL SKILLS */}

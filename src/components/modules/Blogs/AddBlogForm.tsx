@@ -136,7 +136,9 @@ export default function AddBlogForm() {
                         />
                     </div>
 
-                    <SingleImageUploader onChange={setImage}></SingleImageUploader>
+                    <div className="pt-6 sm:pt-1.5">
+                        <SingleImageUploader onChange={setImage}></SingleImageUploader>
+                    </div>
 
                     {/* Tags */}
                     <FormField

@@ -9,8 +9,9 @@ import { FaDiscord } from 'react-icons/fa6';
 import { FaGithub } from 'react-icons/fa6';
 import { RiLinkedinFill } from 'react-icons/ri';
 import { motion } from 'framer-motion';
+import { UserProps } from '@/types';
 
-const Hero = () => {
+const Hero = ({ userInfo }: { userInfo: UserProps }) => {
     const scrollToNextSection = () => {
         const section = document.getElementById('aboutMe');
         section?.scrollIntoView({ behavior: 'smooth' });
@@ -41,17 +42,17 @@ const Hero = () => {
                             </Link>
 
                             <div className="flex items-center gap-x-2 justify-center lg:justify-start">
-                                <Link href="https://github.com/nusrat-xahan05" className="p-[1.5px] rounded-[5px] bg-gradient-to-r from-[#f5ebeb] to-[#FD705C] inline-block">
+                                <Link href={userInfo.githubLink} className="p-[1.5px] rounded-[5px] bg-gradient-to-r from-[#f5ebeb] to-[#FD705C] inline-block">
                                     <div className="rounded-[5px] bg-[#07102A] p-2 flex items-center justify-center">
                                         <FaGithub className="size-[18px] fill-[#f5ebeb]" />
                                     </div>
                                 </Link>
-                                <Link href="https://discordapp.com/users/nusrat_jahan13" className="p-[1.5px] rounded-[5px] bg-gradient-to-r from-[#f5ebeb] to-[#FD705C] inline-block">
+                                <Link href={userInfo.discordLink} className="p-[1.5px] rounded-[5px] bg-gradient-to-r from-[#f5ebeb] to-[#FD705C] inline-block">
                                     <div className="rounded-[5px] bg-[#07102A] p-2 flex items-center justify-center">
                                         <FaDiscord className="size-[18px] fill-[#f5ebeb]" />
                                     </div>
                                 </Link>
-                                <Link href="#" className="p-[1.5px] rounded-[5px] bg-gradient-to-r from-[#f5ebeb] to-[#FD705C] inline-block">
+                                <Link href={userInfo.linkedinLink} className="p-[1.5px] rounded-[5px] bg-gradient-to-r from-[#f5ebeb] to-[#FD705C] inline-block">
                                     <div className="rounded-[5px] bg-[#07102A] p-2 flex items-center justify-center">
                                         <RiLinkedinFill className="size-[18px] fill-[#f5ebeb]" />
                                     </div>

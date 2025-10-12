@@ -401,7 +401,7 @@ export default function UpdateInfoForm({ userInfo }: UpdateUserInfoFormProps) {
                             </Button>
                         </div>
 
-                        <div className="space-y-1.5">
+                        <div className="space-y-1.5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6">
                             {includedFields.map((item, index) => (
                                 <div className="flex gap-2" key={item.id}>
                                     <FormField

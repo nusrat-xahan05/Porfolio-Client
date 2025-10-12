@@ -181,7 +181,7 @@ export default function AddProjectForm() {
                         />
                     </div>
 
-                    <div>
+                    <div className="pt-6 sm:pt-1.5">
                         <div className="flex justify-between">
                             <FormLabel>Project Features</FormLabel>
                             <Button
