@@ -3,7 +3,6 @@ import AboutMe from "@/components/modules/Home/AboutMe";
 import Hero from "@/components/modules/Home/Hero";
 import ProjectCardPublic from "@/components/modules/Projects/ProjectCardPublic";
 import SkillsCard from "@/components/modules/UserInfo/SkillsCard";
-// import SkillsCard from "@/components/modules/UserInfo/SkillsCard";
 import { BlogProps, ProjectProps, UserProps } from "@/types";
 import Link from "next/link";
 

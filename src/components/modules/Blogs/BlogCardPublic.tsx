@@ -30,7 +30,7 @@ export default async function BlogCardPublic({ blog }: { blog: BlogProps }) {
 
                 {/* Content */}
                 <div className="p-6">
-                    <h3 className="text-lg font-bold mb-2 text-[#FFCFCC]">{blog?.title}</h3>
+                    <h3 className="text-lg font-bold mb-2 text-[#FFCFCC] line-clamp-1" title={blog?.title}>{blog?.title}</h3>
                     <h5 className="text-sm text-[#B0B6C2] mb-6 line-clamp-1">{parse(blog?.content)}</h5>
 
                     <div className="flex justify-between text-[rgba(168,177,197,0.8)] text-xs mb-4">
@@ -48,16 +48,16 @@ export default async function BlogCardPublic({ blog }: { blog: BlogProps }) {
                     </div>
 
                     <div className="flex flex-wrap gap-2 mb-4">
-                        {blog?.tags.slice(0, 3).map((tag, idx) => (
+                        {blog?.tags.slice(0, 2).map((tag, idx) => (
                             <span
                                 key={idx}
                                 className="text-xs font-semibold text-[#FD705C] bg-[#FFCFCC1A] px-2 py-1 rounded">
                                 {tag}
                             </span>
                         ))}
-                        {blog?.tags.length > 3 && (
+                        {blog?.tags.length > 2 && (
                             <span className="text-xs font-semibold text-[#FD705C] bg-[#FFCFCC1A] px-2 py-1 rounded">
-                                +{blog?.tags.length - 3} more
+                                +{blog?.tags.length - 2} more
                             </span>
                         )}
                     </div>

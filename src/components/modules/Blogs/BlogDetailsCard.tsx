@@ -2,9 +2,13 @@ import Image from "next/image";
 import { BlogProps } from "@/types";
 import parse from "html-react-parser";
 import Link from "next/link";
+import { handleQuillLists } from "@/hooks/handleQuillLists";
+
 
 
 export default async function BlogDetailsCard({ blog }: { blog: BlogProps }) {
+
+
   if (!blog) {
     return (
       <div className="py-20 text-center text-[#FFCFCC]">Blog not found.</div>
@@ -56,7 +60,7 @@ export default async function BlogDetailsCard({ blog }: { blog: BlogProps }) {
         )}
 
         <article className="py-10 text-[#E7E9EF]">
-          {parse(blog.content)}
+          {parse(handleQuillLists((blog.content)))}
         </article>
 
         <div className="flex flex-wrap items-center gap-2 mt-10 pt-6 border-t border-[#FD705C]/30">
