@@ -20,9 +20,7 @@ export default async function HomePage() {
             fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/projects`, {
                 next: { tags: ["PROJECTS"] },
             }),
-            fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/user/${process.env.ADMIN_EMAIL}`, {
-                next: { tags: ["INFO"] },
-            }),
+            fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/user/${process.env.ADMIN_EMAIL}`),
         ]);
 
         const [blogsData, projectsData, userInfoData] = await Promise.all([
