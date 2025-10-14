@@ -9,11 +9,7 @@ export const metadata: Metadata = {
 };
 
 const UserInfoPageFromDashboard = async () => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/user/${process.env.ADMIN_EMAIL}`, {
-        next: {
-            tags: ["INFO"],
-        },
-    });
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/user/${process.env.ADMIN_EMAIL}`);
     const { data: userInfo } = await res.json();
 
     return (

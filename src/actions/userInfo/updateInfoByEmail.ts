@@ -1,13 +1,8 @@
 "use server";
 
 import { getUserSession } from "@/helpers/getUserSession";
-import { revalidatePath, revalidateTag } from "next/cache";
 
 export const updateInfoByEmail = async (data: FormData) => {
-    for (const [key, value] of data.entries()) {
-        console.log(`fff ${key}:`, value);
-    }
-
     try {
         const session = await getUserSession();
         if (!session?.user?.accessToken) {
@@ -29,9 +24,6 @@ export const updateInfoByEmail = async (data: FormData) => {
                 message: result?.message || "Failed to update info",
             };
         }
-
-        revalidateTag("INFO");
-        revalidatePath("/dashboard/user-info");
 
         return {
             success: true,
