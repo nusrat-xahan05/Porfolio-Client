@@ -16,7 +16,7 @@ export const generateMetadata = async ({ params }: { params: Promise<{ projectId
     const project = await getProjectById(projectId);
 
     return {
-        title: project?.title,
+        title: `${project?.title} | Nusrat Jahan`,
         description: project?.description,
     };
 };

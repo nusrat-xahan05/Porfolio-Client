@@ -5,7 +5,7 @@ import { Metadata } from "next";
 
 
 export const metadata: Metadata = {
-    title: "All Project | Portfolio Project",
+    title: "All Project | Nusrat Jahan",
     description:
         "Browse all project of web development. Full stack, only frontend, only backend",
 };

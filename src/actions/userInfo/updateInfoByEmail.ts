@@ -31,7 +31,7 @@ export const updateInfoByEmail = async (data: FormData) => {
         }
 
         revalidateTag("INFO");
-        revalidatePath("/");
+        revalidatePath("/dashboard/user-info");
 
         return {
             success: true,

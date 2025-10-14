@@ -4,7 +4,7 @@ import { BlogProps } from "@/types";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "All Blogs | Portfolio Blog",
+  title: "All Blogs | Nusrat Jahan",
   description:
     "Browse all blog posts on web development, Next.js, React, and more. Stay updated with the latest tutorials and articles.",
 };
