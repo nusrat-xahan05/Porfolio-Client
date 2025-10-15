@@ -37,7 +37,9 @@ const Hero = ({ userInfo }: { userInfo: UserProps }) => {
                         </p>
 
                         <div className="flex flex-col md:flex-row gap-y-3 gap-x-3 mx-auto lg:mx-0 mt-5 justify-center lg:justify-start">
-                            <Link href="#" className="border-2 bg-[#FD705C] border-[#FD705C] rounded-[9px]">
+                            <Link href="/resume/Nusrat_Jahan_Resume.pdf" 
+                                download="Nusrat_Jahan_Resume.pdf"
+                                className="border-2 bg-[#FD705C] border-[#FD705C] rounded-[9px]">
                                 <Button className="gap-x-2 bg-[#FD705C]">Resume <Download size={18} /></Button>
                             </Link>
 

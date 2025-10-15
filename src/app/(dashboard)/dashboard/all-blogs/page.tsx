@@ -1,4 +1,5 @@
 import BlogCardPrivate from "@/components/modules/Blogs/BlogCardPrivate";
+import PaginationControl from "@/components/shared/PaginationControl";
 import { BlogProps } from "@/types";
 import { PlusCircle } from "lucide-react";
 import { Metadata } from "next";
@@ -11,13 +12,21 @@ export const metadata: Metadata = {
         "Browse all blog posts on web development, Next.js, React, and more. Stay updated with the latest tutorials and articles.",
 };
 
-const AllBlogsPageFromDashboard = async () => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/blogs`, {
+const LIMIT = 6;
+
+const AllBlogsPageFromDashboard = async ({ searchParams }: { searchParams: Promise<{ page?: string }>; }) => {
+    const { page } = await searchParams;
+    const currentPage = Number(page) || 1;
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/blogs?page=${currentPage}&limit=${LIMIT}`, {
         next: {
             tags: ["BLOGS"],
         },
     });
-    const { data: blogs } = await res.json();
+
+    const result = await res.json();
+    const { data: blogs, meta } = result;
+    const totalPages = meta?.totalPage || 1;
 
     return (
         <div className="w-full bg-[rgba(255,207,204,0.5)] min-h-screen py-14">
@@ -44,6 +53,8 @@ const AllBlogsPageFromDashboard = async () => {
                         <BlogCardPrivate key={blog._id} blog={blog} />
                     ))}
                 </div>
+
+                <PaginationControl totalPages={totalPages} currentPage={currentPage} />
             </div>
         </div>
     );

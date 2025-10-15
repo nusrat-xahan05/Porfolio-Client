@@ -1,4 +1,5 @@
 import ProjectCardPrivate from "@/components/modules/Projects/ProjectCardPrivate";
+import PaginationControl from "@/components/shared/PaginationControl";
 import { ProjectProps } from "@/types";
 import { PlusCircle } from "lucide-react";
 import { Metadata } from "next";
@@ -11,13 +12,22 @@ export const metadata: Metadata = {
         "Browse all project of web development. Full stack, only frontend, only backend",
 };
 
-const AllProjectsPageFromDashboard = async () => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/projects`, {
+const LIMIT = 6;
+
+const AllProjectsPageFromDashboard = async ({ searchParams }: { searchParams: Promise<{ page?: string }>; }) => {
+    const { page } = await searchParams;
+    const currentPage = Number(page) || 1;
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/projects?page=${currentPage}&limit=${LIMIT}`, {
         next: {
             tags: ["PROJECTS"],
         },
     });
-    const { data: projects } = await res.json();
+
+    const result = await res.json();
+    const { data: projects, meta } = result;
+
+    const totalPages = meta?.totalPage || 1;
 
     return (
         <div className="w-full bg-[rgba(255,207,204,0.5)] min-h-screen py-14">
@@ -44,6 +54,8 @@ const AllProjectsPageFromDashboard = async () => {
                         <ProjectCardPrivate key={project._id} project={project} />
                     ))}
                 </div>
+
+                <PaginationControl totalPages={totalPages} currentPage={currentPage} />
             </div>
         </div>
     );
