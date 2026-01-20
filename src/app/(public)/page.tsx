@@ -1,6 +1,6 @@
 import BlogCardPublic from "@/components/modules/Blogs/BlogCardPublic";
 import AboutMe from "@/components/modules/Home/AboutMe";
-import ContactForm from "@/components/modules/Home/ContactForm";
+// import ContactForm from "@/components/modules/Home/ContactForm";
 import Hero from "@/components/modules/Home/Hero";
 import ProjectCardPublic from "@/components/modules/Projects/ProjectCardPublic";
 import SkillsCard from "@/components/modules/UserInfo/SkillsCard";
@@ -100,7 +100,7 @@ export default async function HomePage() {
             </div>
 
             {/* Contact Form */}
-            <ContactForm></ContactForm>
+            {/* <ContactForm></ContactForm> */}
 
         </div>
     );
